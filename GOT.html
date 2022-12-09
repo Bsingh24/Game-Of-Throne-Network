@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1000px;
+                 height: 700px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "Bran", "label": "Bran", "shape": "dot", "size": 11}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jon", "label": "Jon", "shape": "dot", "size": 14}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Eddard", "label": "Eddard", "shape": "dot", "size": 11}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Theon", "label": "Theon", "shape": "dot", "size": 8}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Arya", "label": "Arya", "shape": "dot", "size": 12}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jaime", "label": "Jaime", "shape": "dot", "size": 13}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Catelyn", "label": "Catelyn", "shape": "dot", "size": 16}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Varys", "label": "Varys", "shape": "dot", "size": 11}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Sansa", "label": "Sansa", "shape": "dot", "size": 13}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tyrion", "label": "Tyrion", "shape": "dot", "size": 8}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tywin", "label": "Tywin", "shape": "dot", "size": 17}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Roose", "label": "Roose", "shape": "dot", "size": 5}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Joffrey", "label": "Joffrey", "shape": "dot", "size": 11}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Stannis", "label": "Stannis", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Samwell", "label": "Samwell", "shape": "dot", "size": 3}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Cersei", "label": "Cersei", "shape": "dot", "size": 11}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Jorah", "label": "Jorah", "shape": "dot", "size": 4}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Petyr", "label": "Petyr", "shape": "dot", "size": 7}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Margaery", "label": "Margaery", "shape": "dot", "size": 1}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Daenerys", "label": "Daenerys", "shape": "dot", "size": 2}]);
+                  edges = new vis.DataSet([{"from": "Bran", "to": "Jon", "value": 142, "width": 1}, {"from": "Bran", "to": "Eddard", "value": 3, "width": 1}, {"from": "Bran", "to": "Theon", "value": 56, "width": 1}, {"from": "Bran", "to": "Arya", "value": 19, "width": 1}, {"from": "Bran", "to": "Jaime", "value": 14, "width": 1}, {"from": "Bran", "to": "Catelyn", "value": 38, "width": 1}, {"from": "Bran", "to": "Varys", "value": 4, "width": 1}, {"from": "Bran", "to": "Sansa", "value": 14, "width": 1}, {"from": "Bran", "to": "Tyrion", "value": 11, "width": 1}, {"from": "Bran", "to": "Tywin", "value": 5, "width": 1}, {"from": "Bran", "to": "Roose", "value": 3, "width": 1}, {"from": "Jon", "to": "Theon", "value": 27, "width": 1}, {"from": "Jon", "to": "Catelyn", "value": 61, "width": 1}, {"from": "Jon", "to": "Tywin", "value": 6, "width": 1}, {"from": "Jon", "to": "Joffrey", "value": 28, "width": 1}, {"from": "Jon", "to": "Jaime", "value": 17, "width": 1}, {"from": "Jon", "to": "Tyrion", "value": 106, "width": 1}, {"from": "Jon", "to": "Sansa", "value": 27, "width": 1}, {"from": "Jon", "to": "Arya", "value": 80, "width": 1}, {"from": "Jon", "to": "Eddard", "value": 26, "width": 1}, {"from": "Jon", "to": "Stannis", "value": 13, "width": 1}, {"from": "Jon", "to": "Samwell", "value": 152, "width": 1}, {"from": "Jon", "to": "Cersei", "value": 5, "width": 1}, {"from": "Jon", "to": "Jorah", "value": 10, "width": 1}, {"from": "Eddard", "to": "Theon", "value": 12, "width": 1}, {"from": "Eddard", "to": "Catelyn", "value": 19, "width": 1}, {"from": "Eddard", "to": "Stannis", "value": 10, "width": 1}, {"from": "Eddard", "to": "Sansa", "value": 15, "width": 1}, {"from": "Eddard", "to": "Arya", "value": 7, "width": 1}, {"from": "Eddard", "to": "Varys", "value": 7, "width": 1}, {"from": "Eddard", "to": "Petyr", "value": 5, "width": 1}, {"from": "Eddard", "to": "Tywin", "value": 13, "width": 1}, {"from": "Eddard", "to": "Jaime", "value": 7, "width": 1}, {"from": "Theon", "to": "Cersei", "value": 1, "width": 1}, {"from": "Theon", "to": "Joffrey", "value": 9, "width": 1}, {"from": "Theon", "to": "Catelyn", "value": 42, "width": 1}, {"from": "Theon", "to": "Tywin", "value": 24, "width": 1}, {"from": "Theon", "to": "Jaime", "value": 5, "width": 1}, {"from": "Catelyn", "to": "Cersei", "value": 24, "width": 1}, {"from": "Catelyn", "to": "Tywin", "value": 75, "width": 1}, {"from": "Catelyn", "to": "Joffrey", "value": 12, "width": 1}, {"from": "Catelyn", "to": "Arya", "value": 15, "width": 1}, {"from": "Catelyn", "to": "Sansa", "value": 17, "width": 1}, {"from": "Catelyn", "to": "Jaime", "value": 55, "width": 1}, {"from": "Catelyn", "to": "Petyr", "value": 44, "width": 1}, {"from": "Catelyn", "to": "Varys", "value": 12, "width": 1}, {"from": "Catelyn", "to": "Tyrion", "value": 72, "width": 1}, {"from": "Catelyn", "to": "Stannis", "value": 12, "width": 1}, {"from": "Catelyn", "to": "Samwell", "value": 1, "width": 1}, {"from": "Catelyn", "to": "Roose", "value": 24, "width": 1}, {"from": "Cersei", "to": "Tywin", "value": 18, "width": 1}, {"from": "Cersei", "to": "Jaime", "value": 9, "width": 1}, {"from": "Cersei", "to": "Joffrey", "value": 28, "width": 1}, {"from": "Cersei", "to": "Arya", "value": 7, "width": 1}, {"from": "Cersei", "to": "Sansa", "value": 11, "width": 1}, {"from": "Cersei", "to": "Tyrion", "value": 3, "width": 1}, {"from": "Cersei", "to": "Stannis", "value": 20, "width": 1}, {"from": "Cersei", "to": "Varys", "value": 3, "width": 1}, {"from": "Tywin", "to": "Tyrion", "value": 32, "width": 1}, {"from": "Tywin", "to": "Jaime", "value": 93, "width": 1}, {"from": "Tywin", "to": "Arya", "value": 12, "width": 1}, {"from": "Tywin", "to": "Stannis", "value": 24, "width": 1}, {"from": "Tywin", "to": "Jorah", "value": 4, "width": 1}, {"from": "Tywin", "to": "Sansa", "value": 8, "width": 1}, {"from": "Tywin", "to": "Petyr", "value": 9, "width": 1}, {"from": "Tywin", "to": "Varys", "value": 5, "width": 1}, {"from": "Tywin", "to": "Joffrey", "value": 14, "width": 1}, {"from": "Tywin", "to": "Roose", "value": 30, "width": 1}, {"from": "Tywin", "to": "Margaery", "value": 3, "width": 1}, {"from": "Joffrey", "to": "Jaime", "value": 32, "width": 1}, {"from": "Joffrey", "to": "Sansa", "value": 169, "width": 1}, {"from": "Joffrey", "to": "Arya", "value": 82, "width": 1}, {"from": "Joffrey", "to": "Stannis", "value": 31, "width": 1}, {"from": "Joffrey", "to": "Varys", "value": 30, "width": 1}, {"from": "Joffrey", "to": "Petyr", "value": 11, "width": 1}, {"from": "Jaime", "to": "Tyrion", "value": 2, "width": 1}, {"from": "Jaime", "to": "Sansa", "value": 4, "width": 1}, {"from": "Jaime", "to": "Arya", "value": 3, "width": 1}, {"from": "Jaime", "to": "Stannis", "value": 5, "width": 1}, {"from": "Jaime", "to": "Roose", "value": 5, "width": 1}, {"from": "Tyrion", "to": "Samwell", "value": 9, "width": 1}, {"from": "Tyrion", "to": "Sansa", "value": 3, "width": 1}, {"from": "Arya", "to": "Sansa", "value": 135, "width": 1}, {"from": "Arya", "to": "Jorah", "value": 4, "width": 1}, {"from": "Arya", "to": "Varys", "value": 5, "width": 1}, {"from": "Arya", "to": "Petyr", "value": 10, "width": 1}, {"from": "Sansa", "to": "Petyr", "value": 10, "width": 1}, {"from": "Sansa", "to": "Varys", "value": 7, "width": 1}, {"from": "Sansa", "to": "Stannis", "value": 3, "width": 1}, {"from": "Stannis", "to": "Varys", "value": 6, "width": 1}, {"from": "Stannis", "to": "Roose", "value": 1, "width": 1}, {"from": "Daenerys", "to": "Jorah", "value": 16, "width": 1}, {"from": "Daenerys", "to": "Varys", "value": 4, "width": 1}, {"from": "Petyr", "to": "Varys", "value": 11, "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
